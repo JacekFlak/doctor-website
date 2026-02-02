@@ -7,6 +7,34 @@ if (mobileMenuToggle) {
         navMenu.classList.toggle('active');
         mobileMenuToggle.classList.toggle('active');
         document.body.classList.toggle('menu-open');
+        
+        // Update ARIA attributes
+        const isExpanded = navMenu.classList.contains('active');
+        mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
+        mobileMenuToggle.setAttribute('aria-label', isExpanded ? 'Zamknij menu' : 'Otwórz menu');
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target) && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            mobileMenuToggle.setAttribute('aria-label', 'Otwórz menu');
+        }
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            mobileMenuToggle.setAttribute('aria-label', 'Otwórz menu');
+            mobileMenuToggle.focus();
+        }
     });
 }
 
